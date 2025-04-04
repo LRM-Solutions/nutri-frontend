@@ -1,0 +1,5 @@
+.p-inputtext:focus {
+  outline: none; /* Remove o outline padrão */
+  box-shadow: 0 0 0 0.5px rgb(27, 27, 27); /* Adiciona borda azul (green-500 do Tailwind) */
+  border-color: rgb(27, 27, 27); /* Define a cor da borda */
+}

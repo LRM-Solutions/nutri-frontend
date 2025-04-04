@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import "./password.css";
+@import "./input.css";
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+body {
+  font-family: "lato";
+  font-size: 16px !important;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px !important;
+  }
+}
