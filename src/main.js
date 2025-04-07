@@ -14,7 +14,7 @@ const app = createApp(App);
 
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import Toast from "primevue/toast";
+import { Toast } from "primevue";
 // import components
 import VueTimepicker from "vue3-timepicker";
 
@@ -22,10 +22,11 @@ import VueTimepicker from "vue3-timepicker";
 import "vue3-timepicker/dist/VueTimepicker.css";
 
 app.component("Select", Select);
+app.component("Toast", Toast);
 app.component("VueTimepicker", VueTimepicker);
 app.component("Button", Button);
 app.component("InputText", InputText);
-app.component("Toast", Toast);
+
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

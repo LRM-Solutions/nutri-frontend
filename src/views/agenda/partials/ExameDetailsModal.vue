@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import { Dialog, Button, InputText, useToast, Toast } from "primevue";
-import { formatDateDDMMYYYY } from "@/utils/date";
+
 import { usePacienteStore } from "@/stores/paciente";
 import { useExameStore } from "@/stores/exame";
 
@@ -70,7 +70,7 @@ const handleSubmit = async () => {
       return;
     }
 
-    emit("refresh", 1);
+    emit("refresh", 0);
   } else {
     const response = await agendarExame(dataPayload.value);
 
@@ -84,7 +84,7 @@ const handleSubmit = async () => {
       return;
     }
 
-    emit("refresh", 0);
+    emit("refresh", 1);
   }
   closeModal();
   resetForm();
@@ -162,70 +162,15 @@ onMounted(async () => {
     <Dialog
       v-model:visible="props.modelValue"
       modal
-      :header="
-        props.info
-          ? 'Editar Exame'
-          : `Agendar Exame - ${
-              props.date ? formatDateDDMMYYYY(props.date) : null
-            }`
-      "
+      :header="`Detalhes do Exame - ${props.info ? props.info.title : ''}`"
       style="width: 30rem; border-radius: 8px"
       @update:visible="(val) => emit('update:modelValue', val)"
     >
+      <pre>
+      {{ props.info }}
+    </pre
+      >
       <!-- Restante do conteúdo permanece igual -->
-      <span class="text-surface-500 dark:text-surface-400 block mb-8">
-        Preencha os campos a seguir.
-      </span>
-
-      <div class="flex mb-3 flex-col gap-3">
-        <label for="username" class="font-semibold w-34">Paciente:</label>
-
-        <Select
-          v-model="selectedPaciente"
-          :options="pacientesOptions"
-          showClear
-          optionLabel="name"
-          placeholder="Selecione um Paciente"
-          class="w-full"
-        />
-      </div>
-      <div class="flex mb-3 flex-col gap-3">
-        <label for="username" class="font-semibold w-34"
-          >Motivo do Exame:</label
-        >
-        <InputText
-          id="username"
-          class="flex-auto"
-          autocomplete="off"
-          placeholder="Motivo"
-          v-model="dataPayload.exame_descricao"
-        />
-      </div>
-
-      <div class="flex flex-col gap-3 mb-[100px]">
-        <label for="username" class="font-semibold w-34"
-          >Horario do Exame:</label
-        >
-        <VueTimepicker v-model="selectedHour" />
-      </div>
-
-      <div class="flex justify-end gap-2">
-        <Button
-          type="button"
-          label="Cancelar"
-          severity="secondary"
-          @click="closeModal"
-        ></Button>
-        <Button
-          type="button"
-          class="bg-green-500"
-          :label="props.info ? 'Editar' : 'Cadastrar'"
-          @click="handleSubmit"
-          :disabled="disabled"
-          :loading="submitLoading"
-          :loading-label="''"
-        ></Button>
-      </div>
     </Dialog>
     <Toast position="bottom-right" class="z-50" />
   </div>
