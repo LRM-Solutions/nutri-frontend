@@ -8,6 +8,7 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import ToastService from "primevue/toastservice";
+import { Select } from "primevue";
 // components
 const app = createApp(App);
 
@@ -15,7 +16,13 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Toast from "primevue/toast";
 // import components
+import VueTimepicker from "vue3-timepicker";
 
+// CSS
+import "vue3-timepicker/dist/VueTimepicker.css";
+
+app.component("Select", Select);
+app.component("VueTimepicker", VueTimepicker);
 app.component("Button", Button);
 app.component("InputText", InputText);
 app.component("Toast", Toast);

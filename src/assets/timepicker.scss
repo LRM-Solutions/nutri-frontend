@@ -1,0 +1,14 @@
+.vue__time-picker,
+.vue__time-picker-input {
+  width: 100% !important;
+  border-radius: 5px !important;
+  height: 40px !important;
+}
+
+.vue__time-picker .dropdown {
+  width: 100% !important;
+
+  .select-list {
+    width: 100% !important;
+  }
+}

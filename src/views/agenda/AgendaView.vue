@@ -6,28 +6,25 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import ptBrLocale from "@fullcalendar/core/locales/pt-br";
+import NovoExameModal from "./partials/NovoExameModal.vue";
 
 const exameStore = useExameStore();
 const { listarExames } = exameStore;
 
-const examePayload = {
-  exame_id: null,
-  exame_descricao: null,
-  paciente_id: null,
-  exame_data: null,
-};
-
+const novo_exame_data = ref(null);
+const openCreateEditModal = ref(false);
 const examesLista = ref([]);
 
 const handleDateClick = (arg) => {
-  alert("date click! " + arg.dateStr);
+  novo_exame_data.value = arg.dateStr;
+  openCreateEditModal.value = true;
 };
 
 const calendarOptions = ref({
   plugins: [dayGridPlugin, interactionPlugin],
   initialView: "dayGridMonth",
   dateClick: handleDateClick,
-  locales: [ptBrLocale], // Adiciona os locais suportados
+  locales: [ptBrLocale], // Use o locale personalizado
   locale: "pt-br",
   events: [],
 });
@@ -35,6 +32,10 @@ const calendarOptions = ref({
 const initFunction = async () => {
   examesLista.value = await listarExames();
   getEvents(examesLista.value);
+};
+
+const modalClose = () => {
+  openCreateEditModal.value = false;
 };
 
 const getEvents = (arr) => {
@@ -58,6 +59,13 @@ onMounted(async () => {
 <template>
   <div class="h-full p-10 w-full">
     <FullCalendar class="calendar" :options="calendarOptions" />
+    <NovoExameModal
+      v-model="openCreateEditModal"
+      :info="modalInfo"
+      :date="novo_exame_data"
+      @close="modalClose"
+      @refresh="modalRefresh($event)"
+    />
   </div>
 </template>
 
@@ -74,5 +82,8 @@ onMounted(async () => {
 .fc .fc-button-primary:disabled,
 .fc .fc-button-primary {
   border-color: #23c45d;
+}
+.fc-toolbar-title::first-letter {
+  text-transform: uppercase;
 }
 </style>
