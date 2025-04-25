@@ -13,7 +13,6 @@ import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import CriarEditarPaciente from "./partials/CriarEditarPaciente.vue";
 import DeletarPaciente from "./partials/DeletarPaciente.vue";
 import { cpfMask } from "@/utils/masks";
-import { useRouter } from "vue-router";
 
 const openCreateEditModal = ref(false);
 const openDeleteModal = ref(false);
@@ -22,23 +21,23 @@ const clients = ref([]);
 const loading = ref(false);
 const search = ref(null);
 const toast = useToast();
-const router = useRouter();
+
 const options = [
-  {
-    id: 0,
-    name: "Editar",
-    icon: "pi-pen-to-square",
-  },
-  {
-    id: 1,
-    name: "Excluir",
-    icon: "pi-trash",
-  },
-  {
-    id: 2,
-    name: "Exames",
-    icon: "pi-book",
-  },
+  // {
+  //   id: 0,
+  //   name: "Editar",
+  //   icon: "pi-pen-to-square",
+  // },
+  // {
+  //   id: 1,
+  //   name: "Excluir",
+  //   icon: "pi-trash",
+  // },
+  // {
+  //   id: 2,
+  //   name: "Exames",
+  //   icon: "pi-book",
+  // },
   {
     id: 3,
     name: "Visualizar",
@@ -61,27 +60,16 @@ const { listarPacientes } = pacienteStore;
 
 const initFunction = async () => {
   loading.value = true;
-  clients.value = await listarPacientes();
+  clients.value = [];
   loading.value = false;
 };
 
 const handleSelect = (data, id) => {
   modalInfo.value = data;
-
-  switch (id) {
-    case 0:
-      openCreateEditModal.value = true;
-      break;
-    case 1:
-      openDeleteModal.value = true;
-
-      break;
-    case 2:
-      router.push(`/exames/${data.paciente_id}`);
-      break;
-
-    default:
-      break;
+  if (id === 0) {
+    openCreateEditModal.value = true;
+  } else if (id === 1) {
+    openDeleteModal.value = true;
   }
 };
 
@@ -133,14 +121,9 @@ onMounted(async () => {
   <div v-if="!loading" class="flex flex-col w-full p-8 gap-7">
     <div class="w-full flex flex-col md:flex-row gap-3 justify-between z-0">
       <InputText
-        placeholder="🔎   Buscar paciente..."
+        placeholder="🔎   Buscar Exame..."
         class="h-[32px] w-full md:w-[50%]"
         v-model="search"
-      />
-      <Button
-        class="h-[32px] bg-green-500"
-        label="+ Cadastrar paciente"
-        @click="openCreateEditModal = !openCreateEditModal"
       />
     </div>
 
@@ -149,29 +132,25 @@ onMounted(async () => {
       stripedRows
       tableStyle="min-width: 40rem; padding-bottom: 50px"
     >
-      <Column field="paciente_id" header="ID"></Column>
-      <Column field="paciente_nome" header="Nome"></Column>
-      <Column field="paciente_cpf" header="CPF">
+      <Column field="exame_id" header="ID"></Column>
+      <Column field="exame_descricao" header="Descrição"></Column>
+      <Column field="exame_data" header="Data do Exame">
         <template #body="{ data }">
           <span>{{ cpfMask(data.paciente_cpf) }}</span>
         </template>
       </Column>
-      <Column field="paciente_email" header="Email"></Column>
-      <Column header="Ações">
+      <Column header="Visualizar">
         <template #body="{ data }">
-          <BaseDropdown
-            :options="options"
-            @select="(option) => handleSelect(data, option.id)"
-          />
+          <i class="pi pi-eye mr-2"></i>
         </template>
       </Column>
     </DataTable>
-    <CriarEditarPaciente
+    <!-- <CriarEditarPaciente
       v-model="openCreateEditModal"
       :info="modalInfo"
       @close="modalClose"
       @refresh="modalRefresh($event)"
-    />
+    /> -->
     <DeletarPaciente
       v-model="openDeleteModal"
       :info="modalInfo"

@@ -26,8 +26,11 @@ const authStore = useAuthStore();
   transition: all ease-in-out 0.4s;
   height: 100vh;
   //margin-left: 250px;
-  @media (max-width: 1024px) {
-    margin-left: 0;
+  @media (min-width: 1700px) {
+    .base-padding {
+      width: 70%;
+      margin: auto;
+    }
   }
 }
 

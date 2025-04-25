@@ -91,8 +91,8 @@ const props = defineProps({
   opacity: 0;
   transition: 0.15s ease-out;
   max-height: 155px;
+  width: 150px;
   overflow-y: auto;
-
   animation: slide-down 0.3s forwards;
 }
 
