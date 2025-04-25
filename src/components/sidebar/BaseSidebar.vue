@@ -18,7 +18,7 @@ const redirectToLink = (link) => {
 
 <template>
   <nav
-    class="sidebar h-full fixed left-0 flex flex-col items-center justify-between p-3 w-[250px] border-r shadow-2xl border-r-gray-300"
+    class="sidebar h-full fixed left-0 top-0 flex flex-col items-center justify-between p-3 w-[250px] border-r shadow-2xl border-r-gray-300"
   >
     <div class="w-full flex flex-col items-center gap-4">
       <div class="header w-full flex justify-center">
@@ -58,7 +58,8 @@ const redirectToLink = (link) => {
 
 <style scoped lang="scss">
 .sidebar {
-  z-index: 20;
+  z-index: 100;
+  background-color: #fff;
   @media (max-width: 1024px) {
     display: none;
   }
