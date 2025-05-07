@@ -11,9 +11,19 @@ export const useExameStore = defineStore("exame", () => {
     }
   }
 
-  async function listarExames() {
+  async function listarExamesPorData(data) {
     try {
-      const response = await api.exameService.listarExames();
+      const response = await api.exameService.listarExamesPorData(data);
+      return response.data;
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+  async function listarExamesPorPaciente(paciente_id) {
+    try {
+      const response = await api.exameService.listarExamesPorPaciente(
+        paciente_id
+      );
       return response.data;
     } catch (error) {
       console.log(error.response);
@@ -30,7 +40,8 @@ export const useExameStore = defineStore("exame", () => {
   }
   return {
     agendarExame,
-    listarExames,
+    listarExamesPorData,
+    listarExamesPorPaciente,
     deletarExame,
   };
 });

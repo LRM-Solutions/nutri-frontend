@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import BaseMobileSidebar from "./sidebar/BaseMobileSidebar.vue";
 import BaseSidebar from "./sidebar/BaseSidebar.vue";
 import { onMounted, ref, watch, onBeforeUnmount } from "vue";
-import { useRoute } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 const authStore = useAuthStore();
 
 const userData = ref(null);
@@ -71,6 +71,15 @@ onBeforeUnmount(() => {
   >
     <span class="text-2xl font-normal">{{ route.name }}</span>
     <div class="flex items-center gap-5">
+      <RouterLink to="/" :class="route.path == '/' ? 'text-green-500' : null">
+        Agenda
+      </RouterLink>
+      <RouterLink
+        to="/pacientes"
+        :class="route.path == '/pacientes' ? 'text-green-500' : null"
+      >
+        Pacientes
+      </RouterLink>
       <i
         class="mobile-menu-btn pi pi-bars"
         style="font-size: 1.35rem"

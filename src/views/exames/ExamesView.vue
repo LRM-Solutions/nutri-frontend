@@ -12,15 +12,21 @@ import { computed, onMounted, ref } from "vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import CriarEditarPaciente from "./partials/CriarEditarPaciente.vue";
 import DeletarPaciente from "./partials/DeletarPaciente.vue";
-import { cpfMask } from "@/utils/masks";
+import { useExameStore } from "@/stores/exame";
+import { useRoute } from "vue-router";
 
 const openCreateEditModal = ref(false);
 const openDeleteModal = ref(false);
 const modalInfo = ref(null);
-const clients = ref([]);
+const exames = ref([]);
 const loading = ref(false);
 const search = ref(null);
 const toast = useToast();
+
+const exameStore = useExameStore();
+const { listarExamesPorPaciente } = exameStore;
+
+const route = useRoute();
 
 const options = [
   // {
@@ -47,20 +53,17 @@ const options = [
 
 const filteredData = computed(() => {
   if (!search.value) {
-    return clients.value;
+    return exames.value;
   } else {
-    return clients.value.filter((item) =>
-      item.paciente_nome.toLowerCase().includes(search.value.toLowerCase())
+    return exames.value.filter((item) =>
+      item.exame_descricao.toLowerCase().includes(search.value.toLowerCase())
     );
   }
 });
 
-const pacienteStore = usePacienteStore();
-const { listarPacientes } = pacienteStore;
-
 const initFunction = async () => {
   loading.value = true;
-  clients.value = [];
+  exames.value = await listarExamesPorPaciente(route.params.paciente_id);
   loading.value = false;
 };
 
@@ -134,11 +137,7 @@ onMounted(async () => {
     >
       <Column field="exame_id" header="ID"></Column>
       <Column field="exame_descricao" header="Descrição"></Column>
-      <Column field="exame_data" header="Data do Exame">
-        <template #body="{ data }">
-          <span>{{ cpfMask(data.paciente_cpf) }}</span>
-        </template>
-      </Column>
+      <Column field="exame_data" header="Data do Exame"> </Column>
       <Column header="Visualizar">
         <template #body="{ data }">
           <i class="pi pi-eye mr-2"></i>

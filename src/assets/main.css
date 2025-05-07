@@ -2,6 +2,7 @@
 @import "./password.css";
 @import "./input.css";
 @import "./timepicker.scss";
+@import "./button.css";
 @layer tailwind-base, primevue, tailwind-utilities;
 
 @layer tailwind-base {

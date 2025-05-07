@@ -9,9 +9,9 @@ import NovoExameModal from "./partials/NovoExameModal.vue";
 import ExameDetailsModal from "./partials/ExameDetailsModal.vue";
 import { generateColorByIndex } from "@/utils/colors";
 import { useToast } from "primevue";
-
+import { extrairHora } from "@/utils/date";
 const exameStore = useExameStore();
-const { listarExames } = exameStore;
+const { listarExamesPorData } = exameStore;
 const toast = useToast();
 
 const modalInfo = ref(null);
@@ -19,6 +19,11 @@ const novo_exame_data = ref(null);
 const openCreateEditModal = ref(false);
 const openDetailsModal = ref(false);
 const examesLista = ref([]);
+
+const mesCalendario = ref({
+  data_inicio: null,
+  data_fim: null,
+});
 
 const handleDateClick = (arg) => {
   novo_exame_data.value = arg.dateStr;
@@ -33,13 +38,21 @@ const calendarOptions = ref({
   locale: "pt-br",
   eventClick: (info) => {
     openDetailsModal.value = true;
-    modalInfo.value = info.event;
+    modalInfo.value = info.event.extendedProps.data;
+  },
+  datesSet: async (arg) => {
+    console.log(arg);
+    mesCalendario.value.data_inicio = arg.startStr;
+    mesCalendario.value.data_fim = arg.endStr;
+    await initFunction();
   },
   events: [],
 });
 
 const initFunction = async () => {
-  examesLista.value = await listarExames();
+  console.log("mesCalendario", mesCalendario);
+
+  examesLista.value = await listarExamesPorData(mesCalendario.value);
   getEvents(examesLista.value);
 };
 
@@ -73,16 +86,13 @@ const getEvents = (arr) => {
   calendarOptions.value.events = arr.map((item, i) => {
     return {
       exame_id: item.exame_id,
-      title: item.exame_descricao,
+      title: `${item.paciente_nome} - ${extrairHora(item.exame_data)}`,
       start: item.exame_data,
       backgroundColor: generateColorByIndex(i),
+      data: item,
     };
   });
 };
-
-onMounted(async () => {
-  await initFunction();
-});
 </script>
 
 <template>
